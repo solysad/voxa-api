@@ -7,3 +7,4 @@ import { DatabaseModule } from './database/database.module'
   imports: [AuthModule, ModulesModule, DatabaseModule],
 })
 export class AppModule {}
+
