@@ -1,0 +1,118 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================
+// ENUMS
+// ============================
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+  SPECIALIST
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  BLOCKED
+}
+
+// ============================
+// USUÁRIO
+// ============================
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  passwordHash String
+  username     String         @unique
+  role         UserRole       @default(USER)
+  status       UserStatus     @default(PENDING)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  profile      Profile?
+  debates      Debate[]
+  comments     Comment[]
+  // NOVO
+  interests    UserInterest[]
+}
+
+// ============================
+// PERFIL PÚBLICO
+// ============================
+
+model Profile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  name      String?
+  bio       String?
+  avatarUrl String?
+  state     String?
+  city      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================
+// TÓPICOS DE INTERESSE
+// ============================
+
+model Interest {
+  id        Int            @id @default(autoincrement())
+  name      String         @unique
+  createdAt DateTime       @default(now())
+  users     UserInterest[]
+}
+
+// ============================
+// RELAÇÃO USUÁRIO <-> INTERESSE
+// ============================
+
+model UserInterest {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  interestId Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest   Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, interestId])
+}
+
+// ============================
+// DEBATES
+// ============================
+
+model Debate {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  authorId    Int
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[]
+}
+
+// ============================
+// COMENTÁRIOS
+// ============================
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  debateId  Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  debate    Debate   @relation(fields: [debateId], references: [id])
+  createdAt DateTime @default(now())
+}
