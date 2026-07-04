@@ -1,98 +1,196 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Voxa API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend da plataforma Voxa, desenvolvido com NestJS e PostgreSQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A API é responsável por autenticação, gerenciamento de usuários, debates, propostas, votos e demais funcionalidades da plataforma.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Sobre o projeto
 
-## Project setup
+A Voxa nasceu da ideia de incentivar debates centrados em propostas e argumentos, aproximando cidadãos da construção de políticas públicas.
 
-```bash
-$ npm install
+Esta API foi projetada para oferecer uma arquitetura organizada, escalável e segura, servindo como núcleo de comunicação entre os clientes da plataforma e o banco de dados.
+
+---
+
+## Tecnologias
+
+- NestJS
+- Node.js
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- JWT
+- Argon2
+- Class Validator
+- Class Transformer
+
+---
+
+## Funcionalidades implementadas
+
+- Cadastro de usuários
+- Login
+- Autenticação JWT
+- Hash de senhas com Argon2
+- Refresh Token
+- Gerenciamento de perfis
+- Integração com PostgreSQL
+- ORM Prisma
+- Estrutura modular do NestJS
+
+---
+
+## Funcionalidades em desenvolvimento
+
+- Sistema de debates
+- Sistema de propostas
+- Sistema de votação
+- Comentários
+- Notificações
+- Feed personalizado
+- Sistema de denúncias
+
+---
+
+## Estrutura do projeto
+
+```text
+src/
+
+├── auth/
+├── users/
+├── debates/
+├── proposals/
+├── common/
+├── prisma/
+└── main.ts
 ```
 
-## Compile and run the project
+---
+
+## Arquitetura
+
+A aplicação segue a arquitetura modular recomendada pelo NestJS.
+
+Cada domínio da aplicação possui seus próprios módulos, serviços e controladores, facilitando manutenção e escalabilidade.
+
+---
+
+## Banco de Dados
+
+Atualmente a aplicação utiliza PostgreSQL com Prisma ORM.
+
+Principais entidades:
+
+- User
+- Debate
+- Proposal
+- Vote
+- Comment
+- Notification
+
+---
+
+## Segurança
+
+A API utiliza:
+
+- JWT para autenticação
+- Argon2 para hash de senhas
+- Guards do NestJS
+- Validação de DTOs
+- Variáveis de ambiente para informações sensíveis
+
+---
+
+## Decisões de Arquitetura
+
+### Por que NestJS?
+
+Optei pelo NestJS devido à sua arquitetura modular, suporte nativo à injeção de dependências e facilidade para escalar aplicações de médio e grande porte.
+
+### Por que Prisma?
+
+O Prisma oferece tipagem forte, excelente integração com TypeScript e simplifica a manutenção de consultas complexas ao banco de dados.
+
+### Por que PostgreSQL?
+
+Escolhi o PostgreSQL por sua robustez, suporte a relacionamentos complexos e confiabilidade para aplicações que exigem integridade dos dados.
+
+### Por que JWT?
+
+A autenticação baseada em JWT permite uma arquitetura stateless, facilitando a integração entre diferentes clientes da plataforma, como a aplicação web e um futuro aplicativo móvel.
+
+## Como executar
+
+### Clonar
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/solysad/voxa-api.git
 ```
 
-## Run tests
+### Instalar
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+### Configurar ambiente
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Criar um arquivo `.env`:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+DATABASE_URL=
+
+JWT_SECRET=
+
+JWT_EXPIRES_IN=
+```
+
+### Prisma
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npx prisma migrate dev
+
+npx prisma generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Rodar
 
-## Resources
+```bash
+npm run start:dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Roadmap
 
-## Support
+- [x] Autenticação
+- [x] Integração com PostgreSQL
+- [x] Prisma
+- [ ] Debates
+- [ ] Propostas
+- [ ] Sistema de votos
+- [ ] Upload de imagens
+- [ ] Testes automatizados
+- [ ] Documentação Swagger
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## Status
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+🚧 Projeto em desenvolvimento (MVP)
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Autor
+
+João Pedro de Abreu Silva
+
+GitHub:
+https://github.com/solysad
+
+LinkedIn:
+https://www.linkedin.com/in/joão-pedro-silva-731b2141b
