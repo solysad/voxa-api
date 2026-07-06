@@ -89,7 +89,6 @@ export class AuthService {
     const interestIds = Array.isArray(interests)
       ? interests.map((interestId) => Number(interestId)).filter((id) => Number.isInteger(id) && id > 0)
       : [];
-    console.log(interestIds + "");
     
 
     try {
@@ -125,5 +124,60 @@ export class AuthService {
       console.error('Erro ao cadastrar usuário:', error);
       throw new InternalServerErrorException('Erro ao cadastrar usuário');
     }
+  }
+
+  async me(req: any) {
+    if (!req || typeof req !== 'object') {
+      throw new BadRequestException('Dados inválidos');
+    }
+
+    const authHeader = req.headers.authorization;
+    const token = req.cookies.jwt ?? authHeader?.replace("Bearer ", "");
+    if (!token) {
+      throw new UnauthorizedException('Token JWT não encontrado');
+    }
+    const decoded = await this.jwtService.verifyToken(token);
+
+    if (!decoded || typeof decoded !== 'object' || !('sub' in decoded)) {
+      throw new UnauthorizedException('Token JWT inválido ou expirado');
+    }
+
+    const user = await this.prisma.client.user.findUnique({
+      where: { id: decoded.sub },
+      include: {
+        profile: true,
+        interests: {
+          include: {
+            interest: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+
+      profile: {
+        name: user.profile?.name,
+        avatar: user.profile?.avatarUrl,
+        bio: user.profile?.bio,
+        city: user.profile?.city,
+        state: user.profile?.state,
+      },
+
+      interests: user.interests.map((i) => ({
+        id: i.interest.id,
+        name: i.interest.name,
+      })),
+    };
   }
 }

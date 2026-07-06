@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get  ,Body, Res, Req, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { Response } from 'express'
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -40,6 +40,15 @@ export class AuthController {
     return {
       success: true,
       user: newUser,
+    };
+  }
+
+  @Get('me')
+  async me(@Req() req: any) {
+    const user = await this.authService.me(req);
+    return {
+      success: true,
+      retun : user
     };
   }
 }
